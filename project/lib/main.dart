@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:project/successPage.dart';
+
+import 'user.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,12 +14,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(),
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        // home: const MyHomePage(),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const MyHomePage(),
+          '/success': (context) => const SuccessPage(),
+        });
   }
 }
 
@@ -28,47 +35,97 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final _key = GlobalKey<FormState>();
+  late String _username, _email;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Test Title"),
+        title: const Text("Test App"),
       ),
       body: Container(
-        child: Stack(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              color: Colors.black26,
-            ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 150,
-                color: Colors.brown,
+        padding: const EdgeInsets.all(15),
+        child: Form(
+          key: _key,
+          child: Column(
+            children: [
+              usernameInput(),
+              const SizedBox(
+                height: 15,
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Container(
-                margin: const EdgeInsets.only(left: 40, bottom: 150),
-                width: 100,
-                height: 100,
-                color: Colors.amber,
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 200),
-                width: 200,
-                height: 70,
-                color: Colors.lightBlue[200],
-              ),
-            ),
-          ],
+              emailInput(),
+              const SizedBox(height: 10),
+              submitButton(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget usernameInput() {
+    return TextFormField(
+      autofocus: true,
+      validator: (val) {
+        if (val!.isEmpty) {
+          return 'The input is empty.';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (username) => _username = username as String,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: 'Input your username.',
+        labelText: 'Username',
+        labelStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget emailInput() {
+    return TextFormField(
+      autofocus: true,
+      validator: (val) {
+        if (val!.isEmpty) {
+          return 'The input is empty.';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (email) => _email = email as String,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: 'Input your email address.',
+        labelText: 'Email Address',
+        labelStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget submitButton() {
+    return ElevatedButton(
+      onPressed: () {
+        if (_key.currentState!.validate()) {
+          _key.currentState!.save();
+          Navigator.pushNamed(context, '/success',
+              arguments: User(_username, _email));
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        child: const Text(
+          "SUBMIT",
+          style: TextStyle(
+            fontSize: 18,
+          ),
         ),
       ),
     );
