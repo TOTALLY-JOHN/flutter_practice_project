@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project/successPage.dart';
-
-import 'user.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,16 +11,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        // home: const MyHomePage(),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const MyHomePage(),
-          '/success': (context) => const SuccessPage(),
-        });
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(),
+    );
   }
 }
 
@@ -35,9 +28,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _key = GlobalKey<FormState>();
-  late String _username, _email;
-
+  String url =
+      'https://media.istockphoto.com/id/1302442639/photo/view-from-dune-top-over-north-sea.jpg?b=1&s=170667a&w=0&k=20&c=c8vnLNTjoBZo-tKCy-N3KgfhD45CuNeITKAC0xB_zys=';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,87 +37,13 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text("Test App"),
       ),
       body: Container(
-        padding: const EdgeInsets.all(15),
-        child: Form(
-          key: _key,
-          child: Column(
-            children: [
-              usernameInput(),
-              const SizedBox(
-                height: 15,
-              ),
-              emailInput(),
-              const SizedBox(height: 10),
-              submitButton(),
-            ],
+        width: MediaQuery.of(context).size.width,
+        child: Image(
+          height: 400,
+          image: NetworkImage(
+            url,
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget usernameInput() {
-    return TextFormField(
-      autofocus: true,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return 'The input is empty.';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (username) => _username = username as String,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: 'Input your username.',
-        labelText: 'Username',
-        labelStyle: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
-  Widget emailInput() {
-    return TextFormField(
-      autofocus: true,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return 'The input is empty.';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (email) => _email = email as String,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: 'Input your email address.',
-        labelText: 'Email Address',
-        labelStyle: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
-  Widget submitButton() {
-    return ElevatedButton(
-      onPressed: () {
-        if (_key.currentState!.validate()) {
-          _key.currentState!.save();
-          Navigator.pushNamed(context, '/success',
-              arguments: User(_username, _email));
-        }
-      },
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        child: const Text(
-          "SUBMIT",
-          style: TextStyle(
-            fontSize: 18,
-          ),
+          fit: BoxFit.fitHeight,
         ),
       ),
     );
