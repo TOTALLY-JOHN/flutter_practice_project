@@ -28,8 +28,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String url =
-      'https://media.istockphoto.com/id/1302442639/photo/view-from-dune-top-over-north-sea.jpg?b=1&s=170667a&w=0&k=20&c=c8vnLNTjoBZo-tKCy-N3KgfhD45CuNeITKAC0xB_zys=';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,12 +36,17 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
-        child: Image(
-          height: 400,
-          image: NetworkImage(
-            url,
-          ),
-          fit: BoxFit.fitHeight,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+              center: Alignment.center,
+              colors: [
+                Colors.amber[100] as Color,
+                Colors.amber[300] as Color,
+                Colors.amber[500] as Color,
+              ],
+              stops: const [0.1, 0.5, 1.0],
+              radius: 1.0),
         ),
       ),
     );
